@@ -224,21 +224,15 @@ namespace DebugMod
             Object.DontDestroyOnLoad(DebugEasterEgg);
 
             On.SetVersionNumber.Start += ChangeVersionNumber;
-            On.MenuStyleTitle.SetTitle += FixMenuTitle;
+            On.UIManager.SetupRefs += FixMenuTitle;
         }
 
-        private void FixMenuTitle(On.MenuStyleTitle.orig_SetTitle orig, MenuStyleTitle self, int index)
+        private void FixMenuTitle(On.UIManager.orig_SetupRefs orig, UIManager self)
         {
-            if (GameObject.Find("DebugEasterEgg") == null) orig(self, index);
-            else if (OpenedSave) orig(self, index);
-
-            else
+            orig(self);
+            if (GameObject.Find("DebugEasterEgg") != null && !OpenedSave)
             {
                 Log("Running");
-                MenuStyleTitle.TitleSpriteCollection spriteCollection =
-                    index < 0 || index >= self.TitleSprites.Length
-                        ? self.DefaultTitleSprite
-                        : self.TitleSprites[index];
 
                 Texture2D RealTitle_texture = new Texture2D(1, 1);
                 using (Stream stream = Assembly.GetExecutingAssembly()
@@ -252,9 +246,9 @@ namespace DebugMod
 
                 var RealTitle = Sprite.Create(RealTitle_texture,
                     new Rect(0, 0, RealTitle_texture.width, RealTitle_texture.height),
-                    new Vector2(0.5f, 0.5f), spriteCollection.Default.pixelsPerUnit, 0, SpriteMeshType.FullRect);
+                    new Vector2(0.5f, 0.5f), self.gameTitle.sprite.pixelsPerUnit, 0, SpriteMeshType.FullRect);
 
-                self.Title.sprite = RealTitle;
+                self.gameTitle.sprite = RealTitle;
             }
         }
 
@@ -264,7 +258,7 @@ namespace DebugMod
 
             if (!(textUi != null)) return;
             
-            string VersionNumber = OpenedSave ? Constants.GAME_VERSION : "1.2.2.1";
+            string VersionNumber = OpenedSave ? Constants.GAME_VERSION : "1.4.2.4";
             StringBuilder stringBuilder = new StringBuilder(VersionNumber);
             textUi.text = stringBuilder.ToString();
         }

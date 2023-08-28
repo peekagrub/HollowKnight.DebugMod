@@ -296,3 +296,4 @@ __pycache__/
 Source/*.zip
 Source/SHA.txt
 Source/VERSION.txt
+/Output/DebugMod
