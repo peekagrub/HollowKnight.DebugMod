@@ -124,14 +124,6 @@ namespace DebugMod
             
             GameManager.instance.AwardAchievement(AchievementToGive);
         }
-
-        [BindableMethod(name = "Add GrimmKin Flames", category = "Consumables")]
-        public static void GrimmKinFlames()
-        {
-            if (PlayerData.instance.flamesCollected == 3) PlayerData.instance.flamesCollected = 0;
-            else PlayerData.instance.flamesCollected += 1;
-            Console.AddLine("Grimm kin flames incremented");
-        } 
         
         
         private static string[] AllMapBools = new[]

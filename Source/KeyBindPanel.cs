@@ -49,7 +49,6 @@ namespace DebugMod
                 "Items",
                 "Mask & Vessels",
                 "Consumables",
-                "Dreamgate",
             };
             public static Dictionary<string, CategoryInfo> CategoryInfos = new();
             public static int TotalPages => CategoryInfos.Select(x => x.Value.NumPages).Sum();

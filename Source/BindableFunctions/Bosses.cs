@@ -55,29 +55,5 @@ namespace DebugMod
 
             Console.AddLine("Set Lost Kin killed: " + PlayerData.instance.infectedKnightDreamDefeated);
         }
-
-        [BindableMethod(name = "Respawn NK Grimm", category = "Bosses")]
-        public static void ToggleNKGrimm()
-        {
-            if (PlayerData.instance.GetBoolInternal("killedNightmareGrimm") || PlayerData.instance.GetBoolInternal("destroyedNightmareLantern"))
-            {
-                PlayerData.instance.SetBoolInternal("troupeInTown", true);
-                PlayerData.instance.SetBoolInternal("killedNightmareGrimm", false);
-                PlayerData.instance.SetBoolInternal("destroyedNightmareLantern", false);
-                PlayerData.instance.SetIntInternal("grimmChildLevel", 3);
-                PlayerData.instance.SetIntInternal("flamesCollected", 3);
-                PlayerData.instance.SetBoolInternal("grimmchildAwoken", false);
-                PlayerData.instance.SetBoolInternal("metGrimm", true);
-                PlayerData.instance.SetBoolInternal("foughtGrimm", true);
-                PlayerData.instance.SetBoolInternal("killedGrimm", true);
-            }
-            else
-            {
-                PlayerData.instance.SetBoolInternal("troupeInTown", false);
-                PlayerData.instance.SetBoolInternal("killedNightmareGrimm", true);
-            }
-
-            Console.AddLine("Set Nightmare King Grimm killed: " + PlayerData.instance.GetBoolInternal("killedNightmareGrimm"));
-        }
     }
 }

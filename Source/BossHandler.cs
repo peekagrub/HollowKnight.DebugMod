@@ -81,71 +81,23 @@ namespace DebugMod
             {
                 if (bossData[DebugMod.GetSceneName()].Key)
                 {
-                    SceneAdditiveLoadConditional bossLoader =
-                        GameObject.Find("BossLoader")?.GetComponent<SceneAdditiveLoadConditional>();
+                    PlayMakerFSM[] components = GameObject.Find(bossData[DebugMod.GetSceneName()].Value).GetComponents<PlayMakerFSM>();
 
-                    if (bossLoader != null)
+                    if (components != null)
                     {
-                        Console.AddLine(bossLoader.ToString());
-                        Console.AddLine(bossLoader.sceneNameToLoad);
-                    }
-
-                    IEnumerator ResetBoss(string scene)
-                    {
-                        if (bossLoader != null && scene != null)
+                        foreach (PlayMakerFSM playMakerFSM in components)
                         {
-                            yield return null;
-                            yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(scene,
-                                LoadSceneMode.Additive);
-
-                            FieldInfo fi = typeof(SceneAdditiveLoadConditional).GetField("sceneLoaded",
-                                BindingFlags.Instance | BindingFlags.NonPublic);
-
-                            fi.SetValue(bossLoader, true);
-                            yield return null;
-                            GameManager.instance.LoadedBoss();
-                        }
-
-                        PlayMakerFSM[] components = GameObject.Find(bossData[DebugMod.GetSceneName()].Value)
-                            .GetComponents<PlayMakerFSM>();
-
-                        if (components != null)
-                        {
-                            foreach (PlayMakerFSM playMakerFSM in components)
+                            if (playMakerFSM.FsmVariables.GetFsmBool("Activated") != null)
                             {
-                                if (playMakerFSM.FsmVariables.GetFsmBool("Activated") != null)
-                                {
-                                    playMakerFSM.FsmVariables.GetFsmBool("Activated").Value = false;
-                                    Console.AddLine("Boss control for this scene was reset, re-enter scene or warp");
-                                }
+                                playMakerFSM.FsmVariables.GetFsmBool("Activated").Value = false;
+                                Console.AddLine("Boss control for this scene was reset, re-enter scene or warp");
                             }
                         }
-                        else
-                        {
-                            Console.AddLine("GO does not exist or no FSM on it");
-                        }
-                    }
-
-                    GameManager.instance.StartCoroutine(
-                        ResetBoss(bossLoader != null ? bossLoader.sceneNameToLoad : null));
-                }
-                else
-                {
-                    if (bossData[DebugMod.GetSceneName()].Value == "killedGrimm")
-                    {
-                        PlayerData.instance.SetIntInternal("grimmChildLevel", 2);
-                        PlayerData.instance.SetIntInternal("flamesCollected", 3);
-                        PlayerData.instance.SetBoolInternal("grimmChildAwoken", false);
-                        PlayerData.instance.SetBoolInternal("foughtGrimm", false);
-                        PlayerData.instance.SetBoolInternal("killedGrimm", false);
                     }
                     else
                     {
-                        PlayerData.instance.GetType().GetField(bossData[DebugMod.GetSceneName()].Value)
-                            .SetValue(PlayerData.instance, false);
+                        Console.AddLine("GO does not exist or no FSM on it");
                     }
-
-                    Console.AddLine("Boss control for this scene was reset, re-enter scene or warp");
                 }
             }
             else

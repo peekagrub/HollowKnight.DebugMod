@@ -136,7 +136,7 @@ namespace DebugMod
         [BindableMethod(name = "Add Lifeblood", category = "Mask & Vessels")]
         public static void Lifeblood()
         {
-            EventRegister.SendEvent("ADD BLUE HEALTH");
+            PlayMakerFSM.BroadcastEvent("ADD BLUE HEALTH");
 
             Console.AddLine("Attempting to add lifeblood");
         }

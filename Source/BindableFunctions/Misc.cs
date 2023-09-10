@@ -276,5 +276,36 @@ namespace DebugMod
             DebugMod.KeyBindLock = !DebugMod.KeyBindLock;
             Console.AddLine($"{(DebugMod.KeyBindLock ? "Removing" : "Adding")} the ability to use keybinds");
         }
+        [BindableMethod(name = "Increment Load Extender", category = "Misc")]
+        public static void IncrementLoadExtender()
+        {
+            DebugMod.instance.LoadExtender++;
+        }
+
+        [BindableMethod(name = "Decrement Load Extender", category = "Misc")]
+        public static void DecrementLoadExtender()
+        {
+            if (DebugMod.instance.LoadExtender > 0)
+            {
+                DebugMod.instance.LoadExtender--;
+            }
+        }
+
+        [BindableMethod(name = "Easy Superslides", category = "Misc")]
+        public static void ToggleSuperslides()
+        {
+            DebugMod.instance.SuperSlides = !DebugMod.instance.SuperSlides;
+        }
+
+        [BindableMethod(name = "Give Bad Float", category = "Misc")]
+        public static void GiveBadFloat() => HeroController.instance.AffectedByGravity(false);
+
+        [BindableMethod(name = "Hit all Elevators", category = "Misc")]
+        public static void HitElevators()
+        {
+            foreach (PlayMakerFSM controlLever in GameObject.FindObjectsOfType<GameObject>().Where(go => go.name == "Control Lever").Select(go => go.LocateMyFSM("Control Lever"))) {
+                controlLever.SendEvent("HIT");
+            }
+        }
     }
 }

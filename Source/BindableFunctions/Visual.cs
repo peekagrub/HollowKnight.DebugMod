@@ -188,6 +188,40 @@ namespace DebugMod
             }
         }
 
+        [BindableMethod(name = "Reveal Hidden Areas", category = "Visual")]
+        public static void RevealHiddenAreas()
+        {
+            foreach (var playMakerFSM in Object.FindObjectsOfType<Collider2D>().Select(c2d => c2d.gameObject).Select(go => go.LocateMyFSM("unmasker")).Where(fsm => fsm != null))
+            {
+                playMakerFSM.SendEvent("UNCOVER");
+            }
+            foreach (var playMakerFSM in Object.FindObjectsOfType<PlayMakerFSM>().Where(fsm => fsm.gameObject.scene.name != "DontDestroyOnLoad" && fsm.name == "FSM"))
+            {
+                playMakerFSM.SendEvent("DOWN INSTANT");
+            }
+        }
+
+        [BindableMethod(name = "Transparent Inventory", category = "Visual")]
+        public static void TransParentInventory()
+        {
+            DebugMod.instance.inventoryRenderers.RemoveAll(r => r == null);
+            if (DebugMod.instance.inventoryRenderers.Count == 0)
+            {
+                foreach (Renderer renderer in GameObject.FindGameObjectWithTag("Inventory Top").GetComponentsInChildren<Renderer>(true))
+                {
+                    if (renderer.enabled)
+                    {
+                        DebugMod.instance.inventoryRenderers.Add(renderer);
+                    }
+                }
+            }
+
+            foreach (Renderer renderer in DebugMod.instance.inventoryRenderers)
+            {
+                renderer.enabled = !renderer.enabled;
+            }
+        }
+
         internal static void SetAlwaysShowCursor()
         {
             On.InputHandler.OnGUI -= CursorDisplayActive;

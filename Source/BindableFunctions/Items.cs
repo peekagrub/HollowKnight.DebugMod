@@ -174,7 +174,6 @@ namespace DebugMod
             playerData.SetBool("openedRestingGrounds", true);
             playerData.SetBool("openedDeepnest", true);
             playerData.SetBool("openedStagNest", true);
-            playerData.SetBool("openedHiddenStation", true);
             playerData.SetBool("gladeDoorOpened", true);
             playerData.SetBool("troupeInTown", true);
             

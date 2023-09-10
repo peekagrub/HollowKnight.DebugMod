@@ -112,6 +112,7 @@ namespace DebugMod
         //loadDuped is used by external mods
         public void LoadSaveState(SaveStateType stateType, bool loadDuped = false, string operationName = null)
         {
+            Console.AddLine(stateType.ToString() + " quick loading save state");
             switch (stateType)
             {
                 case SaveStateType.Memory:

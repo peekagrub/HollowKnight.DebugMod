@@ -84,7 +84,7 @@ namespace DebugMod
                 return;
             }
             //GameManager.instance.gameObject.AddComponent<SelfDamage>();
-            HeroController.instance.TakeDamage(new GameObject(),CollisionSide.left,1,(int)HazardType.NON_HAZARD);
+            HeroController.instance.TakeDamageWithInfo(new GameObject(), CollisionSide.left, 1, (int)HazardType.NON_HAZARD);
 
             Console.AddLine("Attempting self damage");
         }

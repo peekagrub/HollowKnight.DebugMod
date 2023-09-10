@@ -273,17 +273,13 @@ namespace DebugMod
             //this kills enemies that were dead on the state, they respawn from previous code
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(data.savedSd), SceneData.instance);
 
-            GameManager.instance.BeginSceneTransition
+            GameManager.instance.ChangeToSceneWithInfo
             (
                 new DebugModSaveStateSceneLoadInfo
                 {
                     SceneName = data.saveScene,
-                    HeroLeaveDirection = GatePosition.unknown,
-                    EntryGateName = "dreamGate",
+                    EntryGateName = "",
                     EntryDelay = 0f,
-                    WaitForSceneTransitionCameraFade = false,
-                    Visualization = 0,
-                    AlwaysUnloadUnusedAssets = true
                 }
             );
 
@@ -387,7 +383,7 @@ namespace DebugMod
             int healthBlue = data.savedPd.healthBlue;
             for (int i = 0; i < healthBlue; i++)
             {
-                EventRegister.SendEvent("ADD BLUE HEALTH");
+                PlayMakerFSM.BroadcastEvent("ADD BLUE HEALTH");
             }
 
 
@@ -408,7 +404,6 @@ namespace DebugMod
             {
                 HeroController.instance.UnPause();
             }
-            MenuButtonList.ClearAllLastSelected();
 
             //This allows the next pause to stop the game correctly
             TimeController.GenericTimeScale = 1f;

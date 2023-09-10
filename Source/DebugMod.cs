@@ -66,8 +66,29 @@ namespace DebugMod
 
         internal static DebugMod instance;
 
+        public readonly List<Renderer> inventoryRenderers = new();
+
+        public List<GameObject> loadScreens = new();
+
+        private int loadExtender = 1;
+        private bool superSlides = false;
+
+        public int LoadExtender
+        {
+            get => loadExtender;
+            set => loadExtender = value;
+        }
+
+        public bool SuperSlides
+        {
+            get => superSlides;
+            set => superSlides = value;
+        }
+
+        public override float BeforeAdditiveLoad(string scene) => LoadExtender;
+
         //internal static int NailDamage;
-        
+
         public static GlobalSettings settings { get; set; } = new GlobalSettings();
         public void OnLoadGlobal(GlobalSettings s)
         {
@@ -183,6 +204,8 @@ namespace DebugMod
             ModHooks.TakeHealthHook += PlayerDamaged;
             ModHooks.ApplicationQuitHook += SaveSettings;
 
+            On.GameManager.PauseGameToggle += PatchSuperslides;
+
             //hooks needed for savestate fixes
             On.HeroController.HazardRespawn += OnHazardRespawn;
             On.HeroController.Invulnerable += OnInvulnerable;
@@ -258,7 +281,7 @@ namespace DebugMod
 
             if (!(textUi != null)) return;
             
-            string VersionNumber = OpenedSave ? Constants.GAME_VERSION : "1.4.2.4";
+            string VersionNumber = OpenedSave ? Constants.GAME_VERSION : "1.0.0.5";
             StringBuilder stringBuilder = new StringBuilder(VersionNumber);
             textUi.text = stringBuilder.ToString();
         }
@@ -317,6 +340,26 @@ namespace DebugMod
             return CurrentInvulnCoro;
         }
 
+        private static IEnumerator PatchSuperslides(On.GameManager.orig_PauseGameToggle orig, GameManager self)
+        {
+            // Check if the player is in a valid state to superslide
+            if (!instance.SuperSlides
+                || PlayerData.instance.disablePause
+                || self.gameState != GameState.PLAYING
+                || !ReflectionHelper.GetField<GameManager, bool>(self, "timeSlowed"))
+            {
+                yield return orig(self);
+                yield break;
+            }
+
+            // Remove the freezeframe lock on pausing, reset recoil to ensure max speed
+            ReflectionHelper.SetFieldSafe(self, "timeSlowed", false);
+            ReflectionHelper.SetFieldSafe(HeroController.instance, "recoilStep", 0);
+
+            // Pause the game to cause a superslide
+            yield return orig(self);
+        }
+
         private void NewCharacter() => LoadCharacter(null);
 
         private void LoadCharacter(SaveGameData saveGameData)
@@ -329,7 +372,6 @@ namespace DebugMod
             
             Console.Reset();
             EnemiesPanel.Reset();
-            DreamGate.Reset();
 
             playerInvincible = false;
             infiniteHP = false;

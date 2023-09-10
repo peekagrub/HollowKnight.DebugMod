@@ -83,24 +83,24 @@ namespace DebugMod.Hitbox
             if (collider2D is BoxCollider2D or PolygonCollider2D or EdgeCollider2D or CircleCollider2D)
             {
                 GameObject go = collider2D.gameObject;
-                if (collider2D.GetComponent<DamageHero>() || collider2D.gameObject.LocateMyFSM("damages_hero"))
+                if (collider2D.gameObject.LocateMyFSM("damages_hero"))
                 {
                     colliders[HitboxType.Enemy].Add(collider2D);
                 } 
-                else if (go.GetComponent<HealthManager>()||go.LocateMyFSM("health_manager_enemy") || go.LocateMyFSM("health_manager"))
+                else if (go.LocateMyFSM("health_manager_enemy") || go.LocateMyFSM("health_manager"))
                 {
                     colliders[HitboxType.Other].Add(collider2D);
                 } 
                 else if (go.layer == (int) PhysLayers.TERRAIN)
                 {
-                    if (go.name.Contains("Breakable") || go.name.Contains("Collapse") || go.GetComponent<Breakable>() != null) colliders[HitboxType.Breakable].Add(collider2D);
+                    if (go.name.Contains("Breakable") || go.name.Contains("Collapse")) colliders[HitboxType.Breakable].Add(collider2D);
                     else colliders[HitboxType.Terrain].Add(collider2D);
                 } 
                 else if (go == HeroController.instance?.gameObject && !collider2D.isTrigger)
                 {
                     colliders[HitboxType.Knight].Add(collider2D);
                 } 
-                else if (go.GetComponent<DamageEnemies>()||go.LocateMyFSM("damages_enemy") || go.name == "Damager" && go.LocateMyFSM("Damage"))
+                else if (go.LocateMyFSM("damages_enemy") || go.name == "Damager" && go.LocateMyFSM("Damage"))
                 {
                     colliders[HitboxType.Attack].Add(collider2D);
                 } 
@@ -112,14 +112,10 @@ namespace DebugMod.Hitbox
                 {
                     colliders[HitboxType.Gate].Add(collider2D);
                 } 
-                else if (collider2D.GetComponent<Breakable>())
+                else if (collider2D.GetComponent<NonBouncer>())
                 {
-                    NonBouncer bounce = collider2D.GetComponent<NonBouncer>();
-                    if (bounce == null || !bounce.active)
-                    {
-                        colliders[HitboxType.Trigger].Add(collider2D);
-                    }
-                } 
+                    colliders[HitboxType.Trigger].Add(collider2D);
+                }
                 else if (HitboxViewer.State == 2)
                 {
                     colliders[HitboxType.Other].Add(collider2D);

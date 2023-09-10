@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Modding;
+using Shims.NET.System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine.SceneManagement;
@@ -70,12 +72,12 @@ namespace DebugMod
             public void LoadHook()
             {
                 On.GameManager.UpdateSceneName += UpdateSceneNameOverride;
-                GameManager.instance.OnFinishedSceneTransition += FinishedSceneTransitionHook;
+                ModHooks.SceneChanged += FinishedSceneTransitionHook;
             }
 
-            private void FinishedSceneTransitionHook()
+            private void FinishedSceneTransitionHook(string targetScene)
             {
-                GameManager.instance.OnFinishedSceneTransition -= FinishedSceneTransitionHook;
+                ModHooks.SceneChanged -= FinishedSceneTransitionHook;
                 On.GameManager.UpdateSceneName -= UpdateSceneNameOverride;
             }
 

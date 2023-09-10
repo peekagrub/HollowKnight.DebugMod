@@ -88,10 +88,12 @@ namespace DebugMod.InfoPanels
             MainInfoPanel.AddInfo(10f, 150f, y += 20, "Naildmg", () => DebugMod.RefKnightSlash.FsmVariables.GetFsmInt("damageDealt").Value + " (Flat " + PlayerData.instance.nailDamage + ", x" + DebugMod.RefKnightSlash.FsmVariables.GetFsmFloat("Multiplier").Value + ")");
             MainInfoPanel.AddInfo(10f, 150f, y += 20, "HP", () => PlayerData.instance.health + " / " + PlayerData.instance.maxHealth);
             MainInfoPanel.AddInfo(10f, 150f, y += 20, "MP", () => (PlayerData.instance.MPCharge + PlayerData.instance.MPReserve).ToString());
-            y += 58f;
+            y += 30f;
+            MainInfoPanel.AddInfo(10f, 150f, y += 20, "Load Extender", () => DebugMod.instance.LoadExtender.ToString());
+            y += 30f;
             MainInfoPanel.AddInfo(10f, 150f, y += 20, "Completion", () => PlayerData.instance.completionPercentage.ToString());
             MainInfoPanel.AddInfo(10f, 150f, y += 20, "Grubs", () => PlayerData.instance.grubsCollected + " / 46");
-            y += 58f;
+            y += 30;
             MainInfoPanel.AddInfo(10f, 150f, y += 20, "isInvuln", () => GetStringForBool(HeroController.instance.cState.invulnerable));
             MainInfoPanel.AddInfo(10f, 150f, y += 20, "Invincible", () => GetStringForBool(PlayerData.instance.isInvincible));
             MainInfoPanel.AddInfo(10f, 150f, y += 20, "invinciTest", () => GetStringForBool(PlayerData.instance.invinciTest));

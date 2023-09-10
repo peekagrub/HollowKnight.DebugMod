@@ -20,7 +20,7 @@ namespace DebugMod.MonoBehaviours
             Time.timeScale = DebugMod.CurrentTimeScale;
 
             On.GameManager.SetTimeScale_float += GameManager_SetTimeScale_1;
-            On.QuitToMenu.Start += QuitToMenu_Start;
+            On.GameManager.ReturnToMainMenu += ReturnToMainMenu;
 
             _coroutineHooks = new ILHook[FreezeCoroutines.Length];
 
@@ -41,19 +41,20 @@ namespace DebugMod.MonoBehaviours
             DebugMod.CurrentTimeScale = 1f;
 
             On.GameManager.SetTimeScale_float -= GameManager_SetTimeScale_1;
-            On.QuitToMenu.Start -= QuitToMenu_Start;
-        }
-         
-         // private readonly MethodInfo[] FreezeCoroutines = (
-         //     from method in typeof(GameManager).GetMethods()
-         //     where method.Name.StartsWith("FreezeMoment")
-         //     where method.ReturnType == typeof(IEnumerator)
-         //     select method.GetCustomAttribute<IteratorStateMachineAttribute>() into attr
-         //     select attr.StateMachineType into type
-         //     select type.GetMethod("MoveNext", BindingFlags.NonPublic | BindingFlags.Instance)
-         // ).ToArray();
+            On.GameManager.ReturnToMainMenu -= ReturnToMainMenu;
 
-         private readonly MethodInfo[] FreezeCoroutines = typeof(GameManager)
+        }
+
+        // private readonly MethodInfo[] FreezeCoroutines = (
+        //     from method in typeof(GameManager).GetMethods()
+        //     where method.Name.StartsWith("FreezeMoment")
+        //     where method.ReturnType == typeof(IEnumerator)
+        //     select method.GetCustomAttribute<IteratorStateMachineAttribute>() into attr
+        //     select attr.StateMachineType into type
+        //     select type.GetMethod("MoveNext", BindingFlags.NonPublic | BindingFlags.Instance)
+        // ).ToArray();
+
+        private readonly MethodInfo[] FreezeCoroutines = typeof(GameManager)
              .GetMethods()
              .Where(method => method.Name.StartsWith("FreezeMoment"))
              .Where(method => method.ReturnType == typeof(IEnumerator))
@@ -77,7 +78,7 @@ namespace DebugMod.MonoBehaviours
              cursor.Emit(OpCodes.Mul);
          }
 
-         private IEnumerator QuitToMenu_Start(On.QuitToMenu.orig_Start orig, QuitToMenu self)
+         private IEnumerator ReturnToMainMenu(On.GameManager.orig_ReturnToMainMenu orig, GameManager self)
          {
              yield return orig(self);
 

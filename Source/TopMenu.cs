@@ -31,13 +31,12 @@ namespace DebugMod
             panel.AddButton("Set Spawn", GUIController.Instance.images["ButtonRect"], new Vector2(246f, 28f), Vector2.zero, _=> BindableFunctions.SetHazardRespawn(), buttonRect, GUIController.Instance.trajanBold, "Set Spawn");
             panel.AddButton("Respawn", GUIController.Instance.images["ButtonRect"], new Vector2(346f, 28f), Vector2.zero, _=> BindableFunctions.Respawn(), buttonRect, GUIController.Instance.trajanBold, "Respawn");
             panel.AddButton("Other", GUIController.Instance.images["ButtonRect"], new Vector2(446f, 28f), Vector2.zero, _=> panel.TogglePanel("Other Panel"), buttonRect, GUIController.Instance.trajanBold, "Other");
-            panel.AddButton("DreamGate", GUIController.Instance.images["ButtonRect"], new Vector2(546f, 28f), Vector2.zero, _=>  panel.TogglePanel("DreamGate Panel"), buttonRect, GUIController.Instance.trajanBold, "DreamGate");
+            panel.AddButton("SaveStates", GUIController.Instance.images["ButtonRect"], new Vector2(546f, 28f), Vector2.zero, _ => panel.TogglePanel("SaveStates Panel"), buttonRect, GUIController.Instance.trajanBold, "SaveStates");
             panel.AddButton("Cheats", GUIController.Instance.images["ButtonRect"], new Vector2(46f, 68f), Vector2.zero, _ =>  panel.TogglePanel("Cheats Panel"), buttonRect, GUIController.Instance.trajanBold, "Cheats");
             panel.AddButton("Charms", GUIController.Instance.images["ButtonRect"], new Vector2(146f, 68f), Vector2.zero, _=>   panel.TogglePanel("Charms Panel"), buttonRect, GUIController.Instance.trajanBold, "Charms");
             panel.AddButton("Skills", GUIController.Instance.images["ButtonRect"], new Vector2(246f, 68f), Vector2.zero, _=> panel.TogglePanel("Skills Panel"), buttonRect, GUIController.Instance.trajanBold, "Skills");
             panel.AddButton("Items", GUIController.Instance.images["ButtonRect"], new Vector2(346f, 68f), Vector2.zero, _=>  panel.TogglePanel("Items Panel"), buttonRect, GUIController.Instance.trajanBold, "Items");
             panel.AddButton("Bosses", GUIController.Instance.images["ButtonRect"], new Vector2(446f, 68f), Vector2.zero, _=>  panel.TogglePanel("Bosses Panel"), buttonRect, GUIController.Instance.trajanBold, "Bosses");
-            panel.AddButton("SaveStates", GUIController.Instance.images["ButtonRect"], new Vector2(546f, 68f), Vector2.zero, _ => panel.TogglePanel("SaveStates Panel"), buttonRect, GUIController.Instance.trajanBold, "SaveStates");
 
 
             //Dropdown panels
@@ -46,7 +45,6 @@ namespace DebugMod
             panel.AddPanel("Skills Panel", GUIController.Instance.images["DropdownBG"], new Vector2(245f, 75f), Vector2.zero, new Rect(0, 0, GUIController.Instance.images["DropdownBG"].width, GUIController.Instance.images["DropdownBG"].height));
             panel.AddPanel("Items Panel", GUIController.Instance.images["DropdownBG"], new Vector2(345f, 75f), Vector2.zero, new Rect(0, 0, GUIController.Instance.images["DropdownBG"].width, GUIController.Instance.images["DropdownBG"].height));
             panel.AddPanel("Bosses Panel", GUIController.Instance.images["DropdownBG"], new Vector2(445f, 75f), Vector2.zero, new Rect(0, 0, GUIController.Instance.images["DropdownBG"].width, 200f));
-            panel.AddPanel("DreamGate Panel", GUIController.Instance.images["DreamGateDropdownBG"], new Vector2(545f, 75f), Vector2.zero, new Rect(0, 0, GUIController.Instance.images["DreamGateDropdownBG"].width, GUIController.Instance.images["DreamGateDropdownBG"].height));
             panel.AddPanel("Other Panel", GUIController.Instance.images["DropdownBG"], new Vector2(445f, 75f), Vector2.zero, new Rect(0, 0, GUIController.Instance.images["DropdownBG"].width, GUIController.Instance.images["DropdownBG"].height));
             panel.AddPanel("SaveStates Panel", GUIController.Instance.images["DropdownBG"], new Vector2(545f, 75f), Vector2.zero, new Rect(0, 0, GUIController.Instance.images["DropdownBG"].width, 170f));
 
@@ -65,7 +63,6 @@ namespace DebugMod
             //Charms panel
             panel.GetPanel("Charms Panel").AddButton("All Charms", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 30f), Vector2.zero, AllCharmsClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "All Charms", 10);
             panel.GetPanel("Charms Panel").AddButton("Kingsoul", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 60f), Vector2.zero, KingsoulClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Kingsoul: " + PlayerData.instance.royalCharmState, 10);
-            panel.GetPanel("Charms Panel").AddButton("Grimmchild", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 90f), Vector2.zero, GrimmchildClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Grimmchild: -", 9);
             panel.GetPanel("Charms Panel").AddButton("fHeart fix", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 120f), Vector2.zero, FragileHeartFixClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "fHeart fix", 10);
             panel.GetPanel("Charms Panel").AddButton("fGreed fix", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 150f), Vector2.zero, FragileGreedFixClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "fGreed fix", 10);
             panel.GetPanel("Charms Panel").AddButton("fStrength fix", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 180f), Vector2.zero, FragileStrengthFixClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "fStrength fix", 10);
@@ -84,7 +81,6 @@ namespace DebugMod
             panel.GetPanel("Skills Panel").AddButton("Crystal Heart", GUIController.Instance.images["CrystalHeart"], new Vector2(43f, 194f), new Vector2(37f, 34f), CrystalHeartClicked, new Rect(0f, 0f, GUIController.Instance.images["CrystalHeart"].width, GUIController.Instance.images["CrystalHeart"].height));
             panel.GetPanel("Skills Panel").AddButton("Isma's Tear", GUIController.Instance.images["IsmasTear"], new Vector2(5f, 238f), new Vector2(37f, 40f), IsmasTearClicked, new Rect(0f, 0f, GUIController.Instance.images["IsmasTear"].width, GUIController.Instance.images["IsmasTear"].height));
             panel.GetPanel("Skills Panel").AddButton("Dream Nail", GUIController.Instance.images["DreamNail1"], new Vector2(43f, 251f), new Vector2(37f, 59f), DreamNailClicked, new Rect(0f, 0f, GUIController.Instance.images["DreamNail1"].width, GUIController.Instance.images["DreamNail1"].height));
-            panel.GetPanel("Skills Panel").AddButton("Dream Gate", GUIController.Instance.images["DreamGate"], new Vector2(5f, 288f), new Vector2(37f, 36f), DreamGateClicked, new Rect(0f, 0f, GUIController.Instance.images["DreamGate"].width, GUIController.Instance.images["DreamGate"].height));
             panel.GetPanel("Skills Panel").AddButton("Great Slash", GUIController.Instance.images["NailArt_GreatSlash"], new Vector2(5f, 329f), new Vector2(23f, 23f), GreatSlashClicked, new Rect(0f, 0f, GUIController.Instance.images["NailArt_GreatSlash"].width, GUIController.Instance.images["NailArt_GreatSlash"].height));
             panel.GetPanel("Skills Panel").AddButton("Dash Slash", GUIController.Instance.images["NailArt_DashSlash"], new Vector2(33f, 329f), new Vector2(23f, 23f), DashSlashClicked, new Rect(0f, 0f, GUIController.Instance.images["NailArt_DashSlash"].width, GUIController.Instance.images["NailArt_DashSlash"].height));
             panel.GetPanel("Skills Panel").AddButton("Cyclone Slash", GUIController.Instance.images["NailArt_CycloneSlash"], new Vector2(61f, 329f), new Vector2(23f, 23f), CycloneSlashClicked, new Rect(0f, 0f, GUIController.Instance.images["NailArt_CycloneSlash"].width, GUIController.Instance.images["NailArt_CycloneSlash"].height));
@@ -96,7 +92,6 @@ namespace DebugMod
             panel.GetPanel("Skills Panel").AddImage("Crystal Heart Glow", GUIController.Instance.images["BlueGlow"], new Vector2(38f, 189f), new Vector2(47f, 44f), new Rect(0f, 0f, GUIController.Instance.images["BlueGlow"].width, GUIController.Instance.images["BlueGlow"].height));
             panel.GetPanel("Skills Panel").AddImage("Isma's Tear Glow", GUIController.Instance.images["BlueGlow"], new Vector2(0f, 233f), new Vector2(47f, 50f), new Rect(0f, 0f, GUIController.Instance.images["BlueGlow"].width, GUIController.Instance.images["BlueGlow"].height));
             panel.GetPanel("Skills Panel").AddImage("Dream Nail Glow", GUIController.Instance.images["BlueGlow"], new Vector2(38f, 246f), new Vector2(47f, 69f), new Rect(0f, 0f, GUIController.Instance.images["BlueGlow"].width, GUIController.Instance.images["BlueGlow"].height));
-            panel.GetPanel("Skills Panel").AddImage("Dream Gate Glow", GUIController.Instance.images["BlueGlow"], new Vector2(0f, 283f), new Vector2(47f, 46f), new Rect(0f, 0f, GUIController.Instance.images["BlueGlow"].width, GUIController.Instance.images["BlueGlow"].height));
             panel.GetPanel("Skills Panel").AddImage("Great Slash Glow", GUIController.Instance.images["BlueGlow"], new Vector2(0f, 324f), new Vector2(33f, 33f), new Rect(0f, 0f, GUIController.Instance.images["BlueGlow"].width, GUIController.Instance.images["BlueGlow"].height));
             panel.GetPanel("Skills Panel").AddImage("Dash Slash Glow", GUIController.Instance.images["BlueGlow"], new Vector2(28f, 324f), new Vector2(33f, 33f), new Rect(0f, 0f, GUIController.Instance.images["BlueGlow"].width, GUIController.Instance.images["BlueGlow"].height));
             panel.GetPanel("Skills Panel").AddImage("Cyclone Slash Glow", GUIController.Instance.images["BlueGlow"], new Vector2(56f, 324f), new Vector2(33f, 33f), new Rect(0f, 0f, GUIController.Instance.images["BlueGlow"].width, GUIController.Instance.images["BlueGlow"].height));
@@ -139,25 +134,6 @@ namespace DebugMod
             panel.GetPanel("Bosses Panel").AddButton("Failed Champ", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 110f), Vector2.zero, FailedChampClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Failed Champ", 10);
             panel.GetPanel("Bosses Panel").AddButton("Soul Tyrant", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 130f), Vector2.zero, SoulTyrantClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Soul Tyrant", 10);
             panel.GetPanel("Bosses Panel").AddButton("Lost Kin", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 150f), Vector2.zero, LostKinClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Lost Kin", 10);
-            panel.GetPanel("Bosses Panel").AddButton("NK Grimm", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 180f), Vector2.zero, NKGrimmClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "NK Grimm", 10);
-
-            //Dream gate left panel
-            panel.GetPanel("DreamGate Panel").AddButton("Read Data", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 30f), Vector2.zero, ReadDataClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Read Data", 10);
-            panel.GetPanel("DreamGate Panel").AddButton("Save Data", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 50f), Vector2.zero, SaveDataClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Save Data", 10);
-            panel.GetPanel("DreamGate Panel").AddButton("Delete Item", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 70f), Vector2.zero, DeleteItemClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Delete Item", 10);
-            panel.GetPanel("DreamGate Panel").AddButton("Add Item", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 90f), Vector2.zero, AddItemClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Add Item", 10);
-
-            //Dream gate right panel
-            panel.GetPanel("DreamGate Panel").AddButton("Right1", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(90f, 30f), Vector2.zero, SetWarpClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.arial, "");
-            panel.GetPanel("DreamGate Panel").AddButton("Right2", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(90f, 50f), Vector2.zero, SetWarpClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.arial, "");
-            panel.GetPanel("DreamGate Panel").AddButton("Right3", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(90f, 70f), Vector2.zero, SetWarpClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.arial, "");
-            panel.GetPanel("DreamGate Panel").AddButton("Right4", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(90f, 90f), Vector2.zero, SetWarpClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.arial, "");
-            panel.GetPanel("DreamGate Panel").AddButton("Right5", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(90f, 110f), Vector2.zero, SetWarpClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.arial, "");
-            panel.GetPanel("DreamGate Panel").AddButton("Right6", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(90f, 130f), Vector2.zero, SetWarpClicked, new Rect(0f, 0f, 80f, 20f), GUIController.Instance.arial, "");
-
-            //Dream gate scroll
-            panel.GetPanel("DreamGate Panel").AddButton("Scroll Up", GUIController.Instance.images["ScrollBarArrowUp"], new Vector2(180f, 30f), Vector2.zero, ScrollUpClicked, new Rect(0f, 0f, GUIController.Instance.images["ScrollBarArrowUp"].width, GUIController.Instance.images["ScrollBarArrowUp"].height));
-            panel.GetPanel("DreamGate Panel").AddButton("Scroll Down", GUIController.Instance.images["ScrollBarArrowDown"], new Vector2(180f, 130f), Vector2.zero, ScrollDownClicked, new Rect(0f, 0f, GUIController.Instance.images["ScrollBarArrowDown"].width, GUIController.Instance.images["ScrollBarArrowDown"].height));
 
             //Other Panel
             panel.GetPanel("Other Panel").AddButton("Join Discord", GUIController.Instance.images["ButtonRectEmpty"], new Vector2(5f, 30f), Vector2.zero, _ => Application.OpenURL("https://discord.gg/VDsg3HmWuB"), new Rect(0f, 0f, 80f, 20f), GUIController.Instance.trajanNormal, "Join Discord", 10);
@@ -257,36 +233,6 @@ namespace DebugMod
                 savepanel.GetButton("File Load").SetTextColor(SaveStateManager.currentStateOperation == "Load new state from file" ? new Color(244f / 255f, 127f / 255f, 32f / 255f) : Color.white);
                 savepanel.GetButton("Load State On Death").SetTextColor(DebugMod.stateOnDeath ? new Color(244f / 255f, 127f / 255f, 32f / 255f) : Color.white);
             }
-
-            if (panel.GetPanel("DreamGate Panel").active)
-            {
-                panel.GetPanel("DreamGate Panel").GetButton("Delete Item").SetTextColor(DreamGate.delMenu ? new Color(244f / 255f, 127f / 255f, 32f / 255f) : Color.white);
-
-                panel.GetPanel("DreamGate Panel").GetButton("Right1").UpdateText("");
-                panel.GetPanel("DreamGate Panel").GetButton("Right2").UpdateText("");
-                panel.GetPanel("DreamGate Panel").GetButton("Right3").UpdateText("");
-                panel.GetPanel("DreamGate Panel").GetButton("Right4").UpdateText("");
-                panel.GetPanel("DreamGate Panel").GetButton("Right5").UpdateText("");
-                panel.GetPanel("DreamGate Panel").GetButton("Right6").UpdateText("");
-
-                int i = 0;
-                int buttonNum = 1;
-
-                foreach (string entryName in DreamGate.dgData.Keys)
-                {
-                    if (i >= DreamGate.scrollPosition)
-                    {
-                        panel.GetPanel("DreamGate Panel").GetButton("Right" + buttonNum).UpdateText(entryName);
-                        buttonNum++;
-                        if (buttonNum > 6)
-                        {
-                            break;
-                        }
-                    }
-                    
-                    i++;
-                }
-            }
         }
 
         private static void RefreshItemsMenu()
@@ -324,7 +270,6 @@ namespace DebugMod
             panel.GetImage("Monarch Wings Glow", "Skills Panel").SetActive(true);
             panel.GetImage("Crystal Heart Glow", "Skills Panel").SetActive(true);
             panel.GetImage("Isma's Tear Glow", "Skills Panel").SetActive(true);
-            panel.GetImage("Dream Gate Glow", "Skills Panel").SetActive(true);
             panel.GetImage("Dream Nail Glow", "Skills Panel").SetActive(true);
             panel.GetImage("Great Slash Glow", "Skills Panel").SetActive(true);
             panel.GetImage("Dash Slash Glow", "Skills Panel").SetActive(true);
@@ -335,7 +280,6 @@ namespace DebugMod
             if (!PlayerData.instance.hasDoubleJump) panel.GetImage("Monarch Wings Glow", "Skills Panel").SetActive(false);
             if (!PlayerData.instance.hasSuperDash) panel.GetImage("Crystal Heart Glow", "Skills Panel").SetActive(false);
             if (!PlayerData.instance.hasAcidArmour) panel.GetImage("Isma's Tear Glow", "Skills Panel").SetActive(false);
-            if (!PlayerData.instance.hasDreamGate) panel.GetImage("Dream Gate Glow", "Skills Panel").SetActive(false);
             if (!PlayerData.instance.hasDreamNail && !PlayerData.instance.dreamNailUpgraded) panel.GetImage("Dream Nail Glow", "Skills Panel").SetActive(false);
             if (!PlayerData.instance.hasDashSlash) panel.GetImage("Great Slash Glow", "Skills Panel").SetActive(false);
             if (!PlayerData.instance.hasUpwardSlash) panel.GetImage("Dash Slash Glow", "Skills Panel").SetActive(false);
@@ -431,11 +375,6 @@ namespace DebugMod
             BindableFunctions.ToggleOvercharm();
         }
 
-        private static void GrimmchildClicked(string buttonName)
-        {
-            BindableFunctions.IncreaseGrimmchildLevel();
-        }
-
         private static void AllSkillsClicked(string buttonName)
         {
             BindableFunctions.GiveAllSkills();
@@ -486,11 +425,6 @@ namespace DebugMod
             BindableFunctions.ToggleDreamNail();
         }
 
-        private static void DreamGateClicked(string buttonName)
-        {
-            BindableFunctions.ToggleDreamGate();
-        }
-
         private static void GreatSlashClicked(string buttonName)
         {
             BindableFunctions.ToggleGreatSlash();
@@ -529,11 +463,6 @@ namespace DebugMod
         private static void LostKinClicked(string buttonName)
         {
             BindableFunctions.ToggleLostKin();
-        }
-
-        private static void NKGrimmClicked(string buttonName)
-        {
-            BindableFunctions.ToggleNKGrimm();
         }
 
         private static void PaleOreClicked(string buttonName)
@@ -620,51 +549,6 @@ namespace DebugMod
             BindableFunctions.GiveVessel();
         }
 
-        private static void ReadDataClicked(string buttonName)
-        {
-            BindableFunctions.ReadDGData();
-        }
-
-        private static void SaveDataClicked(string buttonName)
-        {
-            BindableFunctions.SaveDGData();
-        }
-
-        private static void DeleteItemClicked(string buttonName)
-        {
-            DreamGate.delMenu = !DreamGate.delMenu;
-        }
-
-        private static void AddItemClicked(string buttonName)
-        {
-            BindableFunctions.AddDGPosition();
-        }
-
-        private static void SetWarpClicked(string buttonName)
-        {
-            string text = panel.GetPanel("DreamGate Panel").GetButton(buttonName).GetText();
-
-            if (!String.IsNullOrEmpty(text))
-            {
-                DreamGate.ClickedEntry(text);
-            }
-        }
-
-        private static void ScrollUpClicked(string buttonName)
-        {
-            if (DreamGate.scrollPosition > 0)
-            {
-                DreamGate.scrollPosition--;
-            }
-        }
-
-        private static void ScrollDownClicked(string buttonName)
-        {
-            if (DreamGate.scrollPosition + 6 < DreamGate.dgData.Count)
-            {
-                DreamGate.scrollPosition++;
-            }
-        }
         private static void KeyBindLockClicked(string buttonName)
         {
             BindableFunctions.ToggleLockKeyBinds();

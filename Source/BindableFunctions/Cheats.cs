@@ -22,17 +22,8 @@ namespace DebugMod
         [BindableMethod(name = "Kill All", category = "Cheats")]
         public static void KillAll()
         {
-            int ctr = 0;
-
-            foreach (HealthManager hm in Object.FindObjectsOfType<HealthManager>())
-            {
-                if (!hm.isDead)
-                {
-                    hm.Die(null, AttackTypes.Generic, true);
-                    ctr++;
-                }
-            }
-            Console.AddLine($"Killing {ctr} HealthManagers in scene!");
+            PlayMakerFSM.BroadcastEvent("INSTA KILL");
+            Console.AddLine("INSTA KILL broadcasted!");
         }
 
         [BindableMethod(name = "Infinite Jump", category = "Cheats")]
@@ -117,7 +108,7 @@ namespace DebugMod
             HeroController.instance.TakeHealth(9999);
 
             HeroController.instance.heroDeathPrefab.SetActive(true);
-            DebugMod.GM.ReadyForRespawn(false);
+            DebugMod.GM.ReadyForRespawn();
             GameCameras.instance.hudCanvas.gameObject.SetActive(false);
             GameCameras.instance.hudCanvas.gameObject.SetActive(true);
         }

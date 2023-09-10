@@ -39,7 +39,6 @@ namespace DebugMod
 
             PlayerData.instance.hasDreamNail = true;
             PlayerData.instance.dreamNailUpgraded = true;
-            PlayerData.instance.hasDreamGate = true;
 
             PlayerData.instance.hasNailArt = true;
             PlayerData.instance.hasCyclone = true;
@@ -63,7 +62,7 @@ namespace DebugMod
             {
                 PlayerData.instance.hasShadowDash = true;
                 PlayerData.instance.canShadowDash = true;
-                EventRegister.SendEvent("GOT SHADOW DASH");
+                PlayMakerFSM.BroadcastEvent("GOT SHADOW DASH");
                 Console.AddLine("Giving player Shade Cloak");
             }
             else
@@ -159,30 +158,6 @@ namespace DebugMod
                 PlayerData.instance.hasDreamNail = false;
                 PlayerData.instance.dreamNailUpgraded = false;
                 Console.AddLine("Taking away both Dream Nail upgrades");
-            }
-        }
-
-        [BindableMethod(name = "Give Dream Gate", category = "Skills")]
-        public static void ToggleDreamGate()
-        {
-            if (!PlayerData.instance.hasDreamNail && !PlayerData.instance.hasDreamGate)
-            {
-                PlayerData.instance.hasDreamNail = true;
-                PlayerData.instance.hasDreamGate = true;
-                FSMUtility.LocateFSM(DebugMod.RefKnight, "Dream Nail").FsmVariables.GetFsmBool("Dream Warp Allowed").Value = true;
-                Console.AddLine("Giving player both Dream Nail and Dream Gate");
-            }
-            else if (PlayerData.instance.hasDreamNail && !PlayerData.instance.hasDreamGate)
-            {
-                PlayerData.instance.hasDreamGate = true;
-                FSMUtility.LocateFSM(DebugMod.RefKnight, "Dream Nail").FsmVariables.GetFsmBool("Dream Warp Allowed").Value = true;
-                Console.AddLine("Giving player Dream Gate");
-            }
-            else
-            {
-                PlayerData.instance.hasDreamGate = false;
-                FSMUtility.LocateFSM(DebugMod.RefKnight, "Dream Nail").FsmVariables.GetFsmBool("Dream Warp Allowed").Value = false;
-                Console.AddLine("Taking away Dream Gate");
             }
         }
 

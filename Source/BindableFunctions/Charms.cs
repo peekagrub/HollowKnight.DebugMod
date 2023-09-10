@@ -43,11 +43,6 @@ namespace DebugMod
             PlayerData.instance.royalCharmState = 4;
             PlayerData.instance.gotShadeCharm = true;
             PlayerData.instance.charmCost_36 = 0;
-            PlayerData.instance.fragileGreed_unbreakable = true;
-            PlayerData.instance.fragileStrength_unbreakable = true;
-            PlayerData.instance.fragileHealth_unbreakable = true;
-            PlayerData.instance.grimmChildLevel = 5;
-            PlayerData.instance.charmCost_40 = 3;
             PlayerData.instance.charmSlots = 11;
 
             if (OnGiveAllCharms != null)
@@ -84,11 +79,6 @@ namespace DebugMod
             PlayerData.instance.charmsOwned = 0;
             PlayerData.instance.royalCharmState = 0;
             PlayerData.instance.gotShadeCharm = false;
-            PlayerData.instance.fragileGreed_unbreakable = true;
-            PlayerData.instance.fragileStrength_unbreakable = true;
-            PlayerData.instance.fragileHealth_unbreakable = true;
-            PlayerData.instance.grimmChildLevel = 5;
-            PlayerData.instance.charmCost_40 = 2;
             PlayerData.instance.charmSlots = 3;
             PlayerData.instance.equippedCharms.Clear();
             
@@ -178,41 +168,6 @@ namespace DebugMod
             PlayerData.instance.overcharmed = !PlayerData.instance.overcharmed;
 
             Console.AddLine("Set overcharmed: " + PlayerData.instance.overcharmed);
-        }
-
-        [BindableMethod(name = "Increment Grimmchild", category = "Charms")]
-        public static void IncreaseGrimmchildLevel()
-        {
-            if (!PlayerData.instance.gotCharm_40)
-            {
-                PlayerData.instance.gotCharm_40 = true;
-            }
-
-            PlayerData.instance.grimmChildLevel += 1;
-
-            if (PlayerData.instance.grimmChildLevel >= 6)
-            {
-                PlayerData.instance.grimmChildLevel = 0;
-            }
-            PlayerData.instance.charmCost_40 = PlayerData.instance.grimmChildLevel switch
-            {
-                5 => 3,
-                _ => 2,
-            };
-
-            PlayerData.instance.destroyedNightmareLantern = PlayerData.instance.grimmChildLevel == 5;
-
-            Object.Destroy(GameObject.FindWithTag("Grimmchild"));
-
-            UpdateCharmsEffects();
-
-            GameManager.instance.StartCoroutine(SpawnGrimmChild());
-
-            IEnumerator SpawnGrimmChild()
-            {
-                for (int i = 0; i < 2; i++) yield return null;
-                HeroController.instance.transform.Find("Charm Effects").gameObject.LocateMyFSM("Spawn Grimmchild").SendEvent("CHARM EQUIP CHECK");
-            }
         }
 
         [BindableMethod(name = "Add Charm Notch", category = "Charms")]

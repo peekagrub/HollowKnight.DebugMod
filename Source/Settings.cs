@@ -56,7 +56,7 @@ namespace DebugMod
 
         public bool ShowCursorWhileUnpaused = false;
 
-        public bool SaveStateGlitchFixes = true;
+        public bool SaveStateGlitchFixes = false;
 
         //TODO Get rid of this variable and implement an actual clear method
         public bool ClearSaveStatePanel = false;
