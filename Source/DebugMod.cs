@@ -253,7 +253,7 @@ namespace DebugMod
         private void FixMenuTitle(On.UIManager.orig_SetupRefs orig, UIManager self)
         {
             orig(self);
-            if (GameObject.Find("DebugEasterEgg") != null && !OpenedSave)
+            if (GameObject.Find("DebugEasterEgg") != null && !OpenedSave && GameManager.instance.sceneName == "Menu_Title")
             {
                 Log("Running");
 
@@ -277,10 +277,11 @@ namespace DebugMod
 
         private void ChangeVersionNumber(On.SetVersionNumber.orig_Start orig, SetVersionNumber self)
         {
+            orig(self);
             Text textUi = ReflectionHelper.GetField<SetVersionNumber, Text>(self, "textUi");
 
             if (!(textUi != null)) return;
-            
+
             string VersionNumber = OpenedSave ? Constants.GAME_VERSION : "1.0.0.5";
             StringBuilder stringBuilder = new StringBuilder(VersionNumber);
             textUi.text = stringBuilder.ToString();

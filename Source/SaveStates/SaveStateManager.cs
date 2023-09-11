@@ -31,7 +31,7 @@ namespace DebugMod
         public static SaveState quickState;
         public static bool inSelectSlotState = false;   // a mutex, in practice?
         public static int currentStateSlot = -1;
-        public static readonly string saveStatesBaseDirectory = Path.Combine(DebugMod.settings.ModBaseDirectory, "Savestates Current Patch");
+        public static readonly string saveStatesBaseDirectory = Path.Combine(DebugMod.settings.ModBaseDirectory, "Savestates-1028");
         public static string path = Path.Combine(saveStatesBaseDirectory, "0"); // initialize to page 0, this gets read and updated by callbacks during runtime.
         public static string currentStateOperation = null;
 
@@ -81,14 +81,14 @@ namespace DebugMod
         }
 
         #region saving
-        public void SaveSaveState(SaveStateType stateType)
+        public void SaveSaveState(SaveStateType stateType, bool detailedSavestate = false)
         {
             if (!SaveState.loadingSavestate)
             {
                 switch (stateType)
                 {
                     case SaveStateType.Memory:
-                        quickState.SaveTempState();
+                        quickState.SaveTempState(detailedSavestate);
                         break;
                     case SaveStateType.File or SaveStateType.SkipOne:
                         if (!inSelectSlotState)
@@ -211,14 +211,14 @@ namespace DebugMod
         }
 
         // Todo: cleanup Adds and Removes, because used to C++ :)
-        private void SaveCoroHelper(SaveStateType stateType)
+        private void SaveCoroHelper(SaveStateType stateType, bool detailedSavestate = false)
         {
             switch (stateType)
             {
                 case SaveStateType.File:
                     if (quickState == null || !quickState.IsSet())
                     {
-                        quickState.SaveTempState();
+                        quickState.SaveTempState(detailedSavestate);
                     }
                     if (saveStateFiles.ContainsKey(currentStateSlot))
                     {
@@ -234,7 +234,7 @@ namespace DebugMod
                         saveStateFiles.Remove(currentStateSlot);
                     }
                     saveStateFiles.Add(currentStateSlot, new SaveState());
-                    saveStateFiles[currentStateSlot].NewSaveStateToFile(currentStateSlot);
+                    saveStateFiles[currentStateSlot].NewSaveStateToFile(currentStateSlot, detailedSavestate);
                     break;
                 default:
                     break;
