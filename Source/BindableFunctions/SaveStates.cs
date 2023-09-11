@@ -19,7 +19,7 @@ namespace DebugMod
 {
     public static partial class BindableFunctions
     {
-         [BindableMethod(name = "Quickslot (save)", category = "Savestates")]
+        [BindableMethod(name = "Quickslot (save)", category = "Savestates")]
         public static void SaveState()
         {
             DebugMod.saveStateManager.SaveSaveState(SaveStateType.Memory);
@@ -29,6 +29,12 @@ namespace DebugMod
         public static void LoadState()
         {
             DebugMod.saveStateManager.LoadSaveState(SaveStateType.Memory);
+        }
+
+        [BindableMethod(name = "Detailed Quickslot (save)", category = "Savestates")]
+        public static void DetailedSaveState()
+        {
+            DebugMod.saveStateManager.SaveSaveState(SaveStateType.Memory, true);
         }
 
         //TODO: Allow these binds to override each other properly
@@ -45,11 +51,17 @@ namespace DebugMod
             if (SaveStateManager.currentStateOperation != "Load file to quickslot") DebugMod.saveStateManager.LoadSaveState(SaveStateType.File);
             else DebugMod.settings.ClearSaveStatePanel = true;
         }
-
         [BindableMethod(name = "Save new state to file", category = "Savestates")]
         public static void NewSaveStateToFile()
         {
             if (SaveStateManager.currentStateOperation != "Save new state to file") DebugMod.saveStateManager.SaveSaveState(SaveStateType.SkipOne);
+            else DebugMod.settings.ClearSaveStatePanel = true;
+        }
+
+        [BindableMethod(name = "Detailed Save new state to file", category = "Savestates")]
+        public static void DetailedNewSaveStateToFile()
+        {
+            if (SaveStateManager.currentStateOperation != "Save new state to file") DebugMod.saveStateManager.SaveSaveState(SaveStateType.SkipOne, true);
             else DebugMod.settings.ClearSaveStatePanel = true;
         }
 
