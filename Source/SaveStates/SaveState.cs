@@ -552,7 +552,7 @@ namespace DebugMod
             //Menderbug room loads faster (Thanks Magnetic Pizza)
             string dummySceneName =
                 UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Room_Mender_House" ?
-                    "Room_Mender_House": 
+                    "Room_Mender_House":
                     "Room_Sly_Storeroom";
 
             USceneManager.LoadScene(dummySceneName);
@@ -603,12 +603,6 @@ namespace DebugMod
                     Converters = JsonConverterTypes.ConverterTypes
                 }
             );
-
-            //GameManager.instance.playerData = PlayerData.instance;
-            //HeroController.instance.playerData = PlayerData.instance;
-            //HeroController.instance.geoCounter.playerData = PlayerData.instance;
-            //HeroAnimationController aminCtrl = (HeroAnimationController)ReflectionHelper.GetFieldInfo(typeof(HeroController), "animCtrl", true).GetValue(HeroController.instance);
-            //ReflectionHelper.GetFieldInfo(typeof(HeroAnimationController), "pd", true).SetValue(aminCtrl, PlayerData.instance);
 
             GameManager.instance.ResetSemiPersistentItems();
 
@@ -729,22 +723,7 @@ namespace DebugMod
             }
 
             ReflectionHelper.CallMethod(HeroController.instance, "FinishedEnteringScene", true, false);
-            //ReflectionHelper.CallMethod(GameManager.instance, "UpdateUIStateFromGameState");
-
-
-            if (GameManager.instance.ui is null)
-            {
-                ReflectionHelper.GetPropertyInfo(typeof(GameManager), "ui", true).SetValue(GameManager.instance, Object.FindObjectOfType<UIManager>());
-            }
-
-            if (GameManager.instance is not null)
-            {
-                GameManager.instance.ui.SetUIStartState(GameManager.instance.gameState);
-            }
-            else
-            {
-                DebugMod.instance.LogError("GM: Could not find the UI manager in this scene.");
-            }
+            UpdateUIStateFromGameState();
 
             if (data.enemyPosition.Count > 0)
             {
@@ -931,18 +910,28 @@ namespace DebugMod
             }
 
             //This allows the next pause to stop the game correctly
-            TimeController.GenericTimeScale = 1f;
-
-            //var quickmapCachedInv = HeroController.instance.gameObject.LocateMyFSM("Map Control").FsmVariables
-            //    .FindFsmGameObject("Inventory");
-            //if (data.quickmapStorageUsed != (quickmapCachedInv.Value != null))
-            //{
-            //    quickmapCachedInv.Value = data.quickmapStorageUsed ? GameObject.FindWithTag("Inventory Top") : null;
-            //}
+            Time.timeScale = 1f;
 
             TimeSpan loadingStateTime = loadingStateTimer.Elapsed;
             // Console.AddLine($"Loaded savestate in " + loadingStateTime.ToString(@"ss\.fff") + "s");
             Console.AddLine($"Loaded savestate in {loadingStateTime.Seconds}.{loadingStateTime.Milliseconds:03}s");
+        }
+
+        // equivelant to GameMangager::UpdateUIStateFromGameState on 1.3+
+        private void UpdateUIStateFromGameState()
+        {
+            if (GameManager.instance.ui is not null)
+            {
+                GameManager.instance.ui.SetUIStartState(GameManager.instance.gameState);
+                return;
+            }
+            ReflectionHelper.GetPropertyInfo(typeof(GameManager), "ui", true).SetValue(GameManager.instance, Object.FindObjectOfType<UIManager>());
+            if (GameManager.instance.ui is not null)
+            {
+                GameManager.instance.ui.SetUIStartState(GameManager.instance.gameState);
+                return;
+            }
+            DebugMod.instance.LogError("Could not find the UI manager in this scene.");
         }
 
         //these are toggleable, as they will prevent glitches from persisting

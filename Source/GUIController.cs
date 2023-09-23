@@ -43,6 +43,16 @@ namespace DebugMod
         {
             hazardLocation = PlayerData.instance.hazardRespawnLocation;
             respawnSceneWatch = PlayerData.instance.respawnScene;
+            On.HeroController.Start += AttackCam;
+            // Kill black borders
+            On.SceneManager.DrawBlackBorders += (_, __) => { };
+        }
+
+        private void AttackCam(On.HeroController.orig_Start orig, HeroController self)
+        {
+            orig(self);
+            On.HeroController.Start -= AttackCam;
+            base.gameObject.AddComponent<TikTikCamController>();
         }
 
         public void BuildMenus()

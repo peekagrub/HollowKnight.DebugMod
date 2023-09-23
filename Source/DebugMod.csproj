@@ -34,6 +34,9 @@
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>$(HollowKnightFolder)\Assembly-CSharp.dll</HintPath>
         </Reference>
+		<Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+			<HintPath>$(HollowKnightFolder)\Assembly-CSharp-firstpass.dll</HintPath>
+		</Reference>
         <Reference Include="Mono.Cecil, Version=0.10.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e">
           <HintPath>$(HollowKnightFolder)\Mono.Cecil.dll</HintPath>
         </Reference>

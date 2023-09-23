@@ -18,7 +18,6 @@ using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-
 namespace DebugMod
 {
     public class DebugMod : Mod, IGlobalSettings<GlobalSettings>, ILocalSettings<SaveSettings>, ICustomMenuMod
@@ -129,10 +128,20 @@ namespace DebugMod
 
         static int alphaStart;
         static int alphaEnd;
-        
-        public override void Initialize()
+
+        public override List<(string, string)> GetPreloadNames()
+        {
+            return new List<(string, string)>
+            {
+                ("Crossroads_01", "_Enemies/Climber 1")
+            };
+        }
+
+        public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
         {
             instance.Log("Initializing");
+
+            TikTikCamController.tiktikClone = preloadedObjects["Crossroads_01"]["_Enemies/Climber 1"];
 
             float startTime = Time.realtimeSinceStartup;
             instance.Log("Building MethodInfo dict...");

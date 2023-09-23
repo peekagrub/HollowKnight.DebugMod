@@ -307,5 +307,14 @@ namespace DebugMod
                 controlLever.SendEvent("HIT");
             }
         }
+
+        [BindableMethod(name = "Swap TikTik cam and Knight cam", category = "Misc")]
+        public static void SwapCams()
+        {
+            TikTikCamController.instance.SwapCameras();
+            var vignette = GameObject.FindGameObjectWithTag("Vignette");
+            vignette.transform.localScale = new Vector3(5, 5, 5);
+            vignette.transform.FindChild("Darkness Plates").gameObject.SetActive(false);
+        }
     }
 }
