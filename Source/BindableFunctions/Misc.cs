@@ -308,6 +308,12 @@ namespace DebugMod
             }
         }
 
+        [BindableMethod(name = "Toggle Tiktik cam", category = "Misc")]
+        public static void ToggleTiktik()
+        {
+            TikTikCamController.ShowTiktik = !TikTikCamController.ShowTiktik;
+        }
+
         [BindableMethod(name = "Swap TikTik cam and Knight cam", category = "Misc")]
         public static void SwapCams()
         {

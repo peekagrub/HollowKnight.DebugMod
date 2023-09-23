@@ -30,7 +30,29 @@ namespace DebugMod
         private GameObject followTiktik;
 
         private bool tiktikIsMainCam = true;
-        private bool showTiktik = true;
+        private static bool showTiktik = true;
+
+        public static bool ShowTiktik
+        {
+            get
+            {
+                return showTiktik;
+            }
+            set
+            {
+                showTiktik = value;
+                if (!showTiktik)
+                {
+                    instance.knightCam.depth = 50;
+                    instance.knightCamtk2d.CameraSettings.rect = new Rect(0, 0, 1, 1);
+                }
+                else
+                {
+                    instance.tiktikIsMainCam = !instance.tiktikIsMainCam;
+                    instance.SwapCameras();
+                }
+            }
+        }
 
         public TikTikCamController()
         {
@@ -105,6 +127,10 @@ namespace DebugMod
 
         private void FocusOnTiktik()
         {
+            if (!showTiktik)
+            {
+                return;
+            }
             var oldTiktik = followTiktik;
             followTiktik = null;
             foreach (GameObject tiktik in FindObjectsOfType<GameObject>().Where(x => x.name == "Climber 1" && x.activeInHierarchy))
