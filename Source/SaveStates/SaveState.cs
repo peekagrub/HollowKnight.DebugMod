@@ -47,7 +47,6 @@ namespace DebugMod
             public object lockArea;
             public SceneData savedSd;
             public Vector3 savePos;
-            public FieldInfo cameraLockArea;
             public string filePath;
             public bool isKinematized;
             public string[] loadedScenes;
@@ -64,7 +63,6 @@ namespace DebugMod
             {
                 saveStateIdentifier = _data.saveStateIdentifier;
                 saveScene = _data.saveScene;
-                cameraLockArea = _data.cameraLockArea;
                 savedPd = _data.savedPd;
                 savedSd = _data.savedSd;
                 savePos = _data.savePos;
@@ -314,8 +312,7 @@ namespace DebugMod
                 }
             );
             data.savePos = HeroController.instance.gameObject.transform.position;
-            data.cameraLockArea = typeof(CameraController).GetField("currentLockArea", BindingFlags.Instance | BindingFlags.NonPublic);
-            data.lockArea = data.cameraLockArea.GetValue(GameManager.instance.cameraCtrl);
+            data.lockArea = typeof(CameraController).GetField("currentLockArea", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(GameManager.instance.cameraCtrl);
             data.isKinematized = HeroController.instance.GetComponent<Rigidbody2D>().isKinematic;
             data.roomSpecificOptions = "0";
             var scenes = SceneWatcher.LoadedScenes;

@@ -5,6 +5,7 @@ using Modding.Menu.Config;
 using UnityEngine;
 using UnityEngine.UI;
 using Shims.NET.System;
+using System.Runtime.CompilerServices;
 
 namespace DebugMod
 {
@@ -12,6 +13,7 @@ namespace DebugMod
     {
         public static MenuBuilder CreateMenuScreen(MenuScreen modListMenu)
         {
+            //MenuScreen
             Action<MenuSelectable> CancelAction = selectable => UIManager.instance.UIGoToDynamicMenu(modListMenu); 
             return new MenuBuilder(UIManager.instance.UICanvas.gameObject, "DebugMod Menu")
                 .CreateTitle("DebugMod Menu", MenuTitleStyle.vanillaStyle)
@@ -36,59 +38,76 @@ namespace DebugMod
                     RegularGridLayout.CreateVerticalLayout(105f),
                     c =>
                     {
+                        //AddMenu
                         c.AddMenuButton(
-                                "Show/Hide Debug UI",
-                                new MenuButtonConfig
+                            "Show/Hide Debug UI",
+                            new MenuButtonConfig
+                            {
+                                CancelAction = CancelAction,
+                                SubmitAction = _ => BindableFunctions.ToggleAllPanels(),
+                                Description = new DescriptionInfo
                                 {
-                                    CancelAction = CancelAction,
-                                    SubmitAction = _ => BindableFunctions.ToggleAllPanels(),
-                                    Description = new DescriptionInfo
-                                    {
-                                        Text = "Click to show/hide DebugMod UI. Doesnt work in main menu"
-                                    },
-                                    Label = "Show/Hide Debug UI",
-                                    Proceed = false
-                                })
-                            .AddMenuButton(
-                                "Reset Settings Changed by Debug",
-                                new MenuButtonConfig
+                                    Text = "Click to show/hide DebugMod UI. Doesnt work in main menu"
+                                },
+                                Label = "Show/Hide Debug UI",
+                                Proceed = false
+                            })
+                        .AddMenuButton(
+                            "Reset Settings Changed by Debug",
+                            new MenuButtonConfig
+                            {
+                                CancelAction = CancelAction,
+                                SubmitAction = _ => BindableFunctions.Reset(),
+                                Description = new DescriptionInfo
                                 {
-                                    CancelAction = CancelAction,
-                                    SubmitAction = _ => BindableFunctions.Reset(),
-                                    Description = new DescriptionInfo
-                                    {
-                                        Text = "Changes such as nail damage and time scale are reset"
-                                    },
-                                    Label = "Reset Settings Changed by Debug",
-                                    Proceed = false
-                                })
-                            .AddMenuButton(
-                                "Reset KeyBinds to Default",
-                                new MenuButtonConfig
+                                    Text = "Changes such as nail damage and time scale are reset"
+                                },
+                                Label = "Reset Settings Changed by Debug",
+                                Proceed = false
+                            })
+                        .AddMenuButton(
+                            "Reset KeyBinds to Default",
+                            new MenuButtonConfig
+                            {
+                                CancelAction = CancelAction,
+                                SubmitAction = _ => DebugMod.ResetKeyBinds(),
+                                Description = new DescriptionInfo
                                 {
-                                    CancelAction = CancelAction,
-                                    SubmitAction = _ => DebugMod.ResetKeyBinds(),
-                                    Description = new DescriptionInfo
-                                    {
-                                        Text = "Current keybinds are removed and the default keybinds are loaded",
-                                    },
-                                    Label = "Reset KeyBinds to Default",
-                                    Proceed = false
-                                })
-                            //TODO: Make this Toggle Visible
-                            .AddMenuButton(
-                                "Toggle Savestate Fixes",
-                                new MenuButtonConfig
+                                    Text = "Current keybinds are removed and the default keybinds are loaded",
+                                },
+                                Label = "Reset KeyBinds to Default",
+                                Proceed = false
+                            })
+                        //TODO: Make this Toggle Visible
+                        .AddMenuButton(
+                            "Toggle Savestate Fixes",
+                            new MenuButtonConfig
+                            {
+                                CancelAction = CancelAction,
+                                SubmitAction = _ => DebugMod.settings.SaveStateGlitchFixes = !DebugMod.settings.SaveStateGlitchFixes,
+                                Description = new DescriptionInfo
                                 {
-                                    CancelAction = CancelAction,
-                                    SubmitAction = _ => DebugMod.settings.SaveStateGlitchFixes = !DebugMod.settings.SaveStateGlitchFixes,
-                                    Description = new DescriptionInfo
-                                    {
-                                        Text = "Turns off numerous changes to glitched states when loading savestates",
-                                    },
-                                    Label = "Toggle Savestate Fixes",
-                                    Proceed = false
-                                });
+                                    Text = "Turns off numerous changes to glitched states when loading savestates",
+                                },
+                                Label = "Toggle Savestate Fixes",
+                                Proceed = false
+                            })
+                        .AddHorizontalOption(
+                            "Toggle Tiktik Cam Default",
+                            new HorizontalOptionConfig
+                            {
+                                CancelAction = CancelAction,
+                                ApplySetting = (_, settingIndex) => DebugMod.settings.TiktikCamDefaultState = settingIndex == 0,
+                                RefreshSetting = (menuSetting, _) => menuSetting.optionList.SetOptionTo(DebugMod.settings.TiktikCamDefaultState ? 0 : 1),
+                                Description = new DescriptionInfo
+                                {
+                                    Text = "Enables or disables Tiktik Camera by default",
+                                },
+                                Label = "Toggle Tiktik Cam Default",
+                                Options = new string[] {"Enabled", "Disabled"}
+                            },
+                            out MenuOptionHorizontal horizontalOption);
+                        horizontalOption.menuSetting.RefreshValueFromGameSettings();
                     })
                 .AddControls(
                     new SingleContentLayout(new AnchoredPosition(

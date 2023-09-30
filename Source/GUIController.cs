@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using DebugMod.Hitbox;
+using DebugMod.TikTikCam;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,7 +53,7 @@ namespace DebugMod
         {
             orig(self);
             On.HeroController.Start -= AttackCam;
-            base.gameObject.AddComponent<TikTikCamController>();
+            TikTikCamHandler.CreateTikTikCam();
         }
 
         public void BuildMenus()

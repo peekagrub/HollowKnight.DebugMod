@@ -61,6 +61,8 @@ namespace DebugMod
         //TODO Get rid of this variable and implement an actual clear method
         public bool ClearSaveStatePanel = false;
 
-        public float tiktikCamProportions = 0.25f;
+        public float TiktikCamProportions = 0.25f;
+
+        public bool TiktikCamDefaultState = false;
     }
 }

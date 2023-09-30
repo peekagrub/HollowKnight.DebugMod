@@ -13,54 +13,32 @@ using Shims.NET.System.Reflection;
 using HutongGames.PlayMaker;
 using GlobalEnums;
 using Modding.Utils;
+using System.Runtime.CompilerServices;
 
-namespace DebugMod
+namespace DebugMod.TikTikCam
 {
     public class TikTikCamController : MonoBehaviour
     {
-        public static TikTikCamController instance { get; private set; }
+        private static TikTikCamController instance;
 
         public static GameObject tiktikClone = null;
 
         private Camera tiktikCam;
         private Camera knightCam;
         private tk2dCamera knightCamtk2d;
-        private readonly Rect cornerRect, fullScreenRect = new Rect(0, 0, 1, 1);
+        private static readonly Rect cornerRect, fullScreenRect = new Rect(0, 0, 1, 1);
 
-        private GameObject followTiktik;
+        internal GameObject followTiktik;
 
-        private bool tiktikIsMainCam = true;
-        private static bool showTiktik = true;
+        private bool tiktikIsMainCam = false;
 
-        public static bool ShowTiktik
+        static TikTikCamController()
         {
-            get
-            {
-                return showTiktik;
-            }
-            set
-            {
-                showTiktik = value;
-                if (!showTiktik)
-                {
-                    instance.knightCam.depth = 50;
-                    instance.knightCamtk2d.CameraSettings.rect = new Rect(0, 0, 1, 1);
-                }
-                else
-                {
-                    instance.tiktikIsMainCam = !instance.tiktikIsMainCam;
-                    instance.SwapCameras();
-                }
-            }
-        }
-
-        public TikTikCamController()
-        {
-            float camProp = DebugMod.settings.tiktikCamProportions;
+            float camProp = DebugMod.settings.TiktikCamProportions;
             cornerRect = new Rect(1 - camProp, 1 - camProp, camProp, camProp);
         }
 
-        private void Start()
+        private void Awake()
         {
             instance = this;
             tiktikCam = gameObject.AddComponent<Camera>();
@@ -70,21 +48,11 @@ namespace DebugMod
             tiktikCam.CopyFrom(GameManager.instance.cameraCtrl.cam);
             gameObject.transform.position = new Vector3(knightCam.gameObject.transform.position.x, knightCam.gameObject.transform.position.y, knightCam.gameObject.transform.position.z);
 
-            knightCamtk2d.CameraSettings.rect = cornerRect;
-            knightCam.depth += 10;
-
-            tiktikCam.cullingMask &= ~(1 << knightCam.gameObject.layer);
-
             tiktikClone.transform.position = new Vector3(-10, -10, tiktikClone.transform.position.z);
             tiktikClone.SetActive(false);
             tiktikClone.name = "Tiktik Clone";
             DontDestroyOnLoad(tiktikClone);
-            FocusOnTiktik();
-            CheckCamEnabled();
 
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += CheckCamEnabled;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += FocusOnTiktik;
-            On.GameManager.ReturnToMainMenu += GameManager_ReturnToMainMenu;
         }
 
         private void LateUpdate()
@@ -95,11 +63,45 @@ namespace DebugMod
             transform.position = new Vector3(followTiktik.transform.position.x, followTiktik.transform.position.y, knightCam.transform.position.z);
         }
 
+        private void OnDisable()
+        {
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= CheckCamEnabled;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= FocusOnTiktik;
+            On.GameManager.ReturnToMainMenu -= GameManager_ReturnToMainMenu;
+            On.HeroController.Start -= ReEnableCam;
+            knightCamtk2d.CameraSettings.rect = fullScreenRect;
+            knightCam.depth = 50;
+        }
+
+        private void OnEnable()
+        {
+            DontDestroyOnLoad(gameObject);
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += CheckCamEnabled;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += FocusOnTiktik;
+            if (GameManager.instance.IsGameplayScene()) 
+                On.GameManager.ReturnToMainMenu += GameManager_ReturnToMainMenu;
+            else 
+                On.HeroController.Start += ReEnableCam;
+            CheckCamEnabled();
+            if (knightCam == null)
+            {
+                knightCamtk2d = GameCameras.instance.tk2dCam;
+                knightCam = GameManager.instance.cameraCtrl.cam;
+            }
+            tiktikCam.rect = tiktikIsMainCam ? fullScreenRect : cornerRect;
+            knightCamtk2d.CameraSettings.rect = tiktikIsMainCam ? cornerRect : fullScreenRect;
+            tiktikCam.depth = tiktikIsMainCam ? 50 : 60;
+            knightCam.depth = tiktikIsMainCam ? 60 : 50;
+            if (followTiktik == null)
+            {
+                FocusOnTiktik();
+            }
+        }
+
         private IEnumerator GameManager_ReturnToMainMenu(On.GameManager.orig_ReturnToMainMenu orig, GameManager self)
         {
             knightCamtk2d.CameraSettings.rect = fullScreenRect;
             tiktikCam.enabled = false;
-            showTiktik = false;
             On.HeroController.Start += ReEnableCam;
             yield return orig(self);
         }
@@ -108,38 +110,35 @@ namespace DebugMod
         {
             On.HeroController.Start -= ReEnableCam;
             orig(self);
-            showTiktik = true;
             CheckCamEnabled();
             knightCamtk2d = GameCameras.instance.tk2dCam;
             knightCam = GameManager.instance.cameraCtrl.cam;
-            tiktikIsMainCam = !tiktikIsMainCam;
-            SwapCameras();
+            tiktikCam.rect = tiktikIsMainCam ? fullScreenRect : cornerRect;
+            knightCamtk2d.CameraSettings.rect = tiktikIsMainCam ? cornerRect : fullScreenRect;
+            tiktikCam.depth = tiktikIsMainCam ? 50 : 60;
+            knightCam.depth = tiktikIsMainCam ? 60 : 50;
         }
 
         private void CheckCamEnabled(Scene _, Scene a) => CheckCamEnabled();
 
         private void CheckCamEnabled()
         {
-            tiktikCam.enabled = showTiktik && GameManager.instance is not null && GameManager.instance.IsGameplayScene();
+            tiktikCam.enabled = GameManager.instance != null && GameManager.instance.IsGameplayScene();
         }
 
         private void FocusOnTiktik(Scene _, Scene __) => FocusOnTiktik();
 
         private void FocusOnTiktik()
         {
-            if (!showTiktik)
-            {
-                return;
-            }
-            var oldTiktik = followTiktik;
+            var oldtiktik = followTiktik;
             followTiktik = null;
-            foreach (GameObject tiktik in FindObjectsOfType<GameObject>().Where(x => x.name == "Climber 1" && x.activeInHierarchy))
+            foreach (GameObject tiktik in FindObjectsOfType<GameObject>().Where(x => x.name.StartsWith("Climber") && x.activeInHierarchy))
             {
-                if (tiktik == null || tiktik == oldTiktik)
+                if (tiktik == null || tiktik == oldtiktik)
                     continue;
 
                 followTiktik = tiktik;
-                break;
+                return;
             }
 
             if (followTiktik == null)
@@ -152,13 +151,14 @@ namespace DebugMod
             }
         }
 
-        public void SwapCameras()
+        public static void SwapCameras()
         {
-            tiktikCam.rect = tiktikIsMainCam ? cornerRect : fullScreenRect;
-            knightCamtk2d.CameraSettings.rect = tiktikIsMainCam ? fullScreenRect : cornerRect;
-            tiktikCam.depth = tiktikIsMainCam ? 60 : 50;
-            knightCam.depth = tiktikIsMainCam ? 50 : 60;
-            tiktikIsMainCam = !tiktikIsMainCam;
+            if (instance == null || !instance.enabled) return;
+            instance.tiktikCam.rect = instance.tiktikIsMainCam ? fullScreenRect : cornerRect;
+            instance.knightCamtk2d.CameraSettings.rect = instance.tiktikIsMainCam ? cornerRect : fullScreenRect;
+            instance.tiktikCam.depth = instance.tiktikIsMainCam ? 50 : 60;
+            instance.knightCam.depth = instance.tiktikIsMainCam ? 60 : 50;
+            instance.tiktikIsMainCam = !instance.tiktikIsMainCam;
         }
 
         private void OnPreCull()

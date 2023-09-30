@@ -16,6 +16,7 @@ using Object = UnityEngine.Object;
 using USceneManager = UnityEngine.SceneManagement.SceneManager;
 using Modding.Utils;
 using System.ComponentModel;
+using DebugMod.TikTikCam;
 
 namespace DebugMod
 {
@@ -311,16 +312,13 @@ namespace DebugMod
         [BindableMethod(name = "Toggle Tiktik cam", category = "Misc")]
         public static void ToggleTiktik()
         {
-            TikTikCamController.ShowTiktik = !TikTikCamController.ShowTiktik;
+            TikTikCamHandler.ToggleTikTikCam();
         }
 
         [BindableMethod(name = "Swap TikTik cam and Knight cam", category = "Misc")]
         public static void SwapCams()
         {
-            TikTikCamController.instance.SwapCameras();
-            var vignette = GameObject.FindGameObjectWithTag("Vignette");
-            vignette.transform.localScale = new Vector3(5, 5, 5);
-            vignette.transform.FindChild("Darkness Plates").gameObject.SetActive(false);
+            TikTikCamController.SwapCameras();
         }
     }
 }

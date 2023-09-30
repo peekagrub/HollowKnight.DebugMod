@@ -17,6 +17,7 @@ using JetBrains.Annotations;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using DebugMod.TikTikCam;
 
 namespace DebugMod
 {
